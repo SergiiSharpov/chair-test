@@ -1,9 +1,10 @@
 import './helpers/LoaderSupport';
-import './helpers/OBJLoader2';
+import './helpers/OBJLoader';
 import './helpers/MTLLoader';
 import './helpers/OrbitControls';
 
-const objLoader = new THREE.OBJLoader2();
+const objLoader = new THREE.OBJLoader();
+const mtlLoader = new THREE.MTLLoader();
 
 let camera, scene, renderer, controls;
 let directionalLight;
@@ -113,12 +114,11 @@ function init() {
 
     document.body.appendChild( renderer.domElement );
 
-    objLoader.loadMtl( './assets/models/chair/chair.mtl', null, (materials) => {
+    mtlLoader.load( './assets/models/chair/chair.mtl', (materials) => {
         objLoader.setMaterials(materials);
         objLoader.load(
             './assets/models/chair/chair.obj',
-            function ( event ) {
-                let object = event.detail.loaderRootNode;
+            function ( object ) {
                 object.traverse((node) => {
                     if (node instanceof THREE.Mesh) {
                         node.receiveShadow = true;
@@ -138,9 +138,7 @@ function init() {
             },
             function ( error ) {
                 console.log( 'An error happened' );
-            },
-            null,
-            true
+            }
         );
     }, null, null );
 
