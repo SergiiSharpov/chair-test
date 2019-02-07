@@ -1,4 +1,3 @@
-import './helpers/LoaderSupport';
 import './helpers/OBJLoader';
 import './helpers/MTLLoader';
 import './helpers/OrbitControls';
@@ -7,7 +6,7 @@ const objLoader = new THREE.OBJLoader();
 const mtlLoader = new THREE.MTLLoader();
 
 let camera, scene, renderer, controls;
-let directionalLight;
+let directionalLight, directionalSubLight;
 let plane;
 
 const SHADOW_MAP_WIDTH = 2048, SHADOW_MAP_HEIGHT = 2048;
@@ -60,9 +59,12 @@ function init() {
     scene.background = new THREE.Color('#cce0ff');
     scene.fog = new THREE.Fog( 0xcce0ff, 5, 1000 );
 
-    scene.add(new THREE.AmbientLight( 0x222222 ));
+   //scene.add(new THREE.AmbientLight( 0x444444 ));
 
-    directionalLight = new THREE.DirectionalLight( 0xcce0ee, 1 );
+    let hemiLight = new THREE.HemisphereLight( 0xa8acb4, 0x482820, 0.4 );
+    scene.add( hemiLight );
+
+    directionalLight = new THREE.DirectionalLight( 0xcce0ee, 0.7 );
     directionalLight.position.set( 1, 1, 1 ).normalize();
     directionalLight.castShadow = true;
 
